@@ -103,5 +103,8 @@ venv.bak/
 # django staticfiles
 /static
 
+# image upload folder
+media/images/
+
 # mypy
 .mypy_cache/

@@ -7,6 +7,11 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 
+from SmartShoppingSystem.storage import OverwriteStorage
+
+
+def upload_to(instance, filename):
+    return 'images/avatars/%s' % (filename)
 
 @python_2_unicode_compatible
 class User(AbstractUser):
