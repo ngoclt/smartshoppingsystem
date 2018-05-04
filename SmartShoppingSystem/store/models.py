@@ -7,6 +7,8 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from SmartShoppingSystem.users.models import User
 
+from SmartShoppingSystem.storage import OverwriteStorage
+
 # Create your models here.
 
 
@@ -43,6 +45,7 @@ class Store(models.Model):
     address = models.CharField(max_length=300, blank=True, default='')
     phone = models.CharField(max_length=30, blank=True, default='')
     manager = models.ManyToManyField(Manager)
+    cover = models.ImageField(storage=OverwriteStorage(), upload_to='upload/images/stores', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     joined_at = models.DateTimeField(auto_now=True)
@@ -61,6 +64,7 @@ class Store(models.Model):
 class Category(models.Model):
     """ model class containing information about a category in the product catalog """
     name = models.CharField(max_length=50)
+    thumbnail = models.ImageField(storage=OverwriteStorage(), upload_to='upload/images/categories', null=True, blank=True)
     slug = models.SlugField(max_length=50, unique=True,
                             help_text='Unique value for product page URL, created automatically from name.')
     description = models.TextField()
@@ -116,8 +120,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
 
-    image = models.ImageField(upload_to='images/products/main')
-    thumbnail = models.ImageField(upload_to='images/products/thumbnails')
+    image = models.ImageField(storage=OverwriteStorage(), upload_to='upload/images/products/main', null=True, blank=True)
+    thumbnail = models.ImageField(storage=OverwriteStorage(), upload_to='upload/images/products/thumbnails', null=True, blank=True)
     image_caption = models.CharField(max_length=200)
 
     class Meta:
