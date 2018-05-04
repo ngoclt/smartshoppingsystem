@@ -10,22 +10,32 @@ from .forms import ProductAdminForm
 
 
 class ShopperAdmin(admin.ModelAdmin):
-    list_display_links = ('last_name', 'first_name', 'email')
-    list_display = ('last_name', 'first_name', 'email')
+    fieldsets = [
+        (None,
+         {'fields': ['username', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'is_active']})
+    ]
+
+    list_display_links = ('username', 'first_name', 'last_name', 'email')
+    list_display = ('username', 'first_name', 'last_name', 'email')
     list_per_page = 50
-    search_fields = ['last_name']
-    ordering = ['last_name']
+    search_fields = ['first_name', 'last_name', 'username', 'email']
+    ordering = ['username']
 
 
 admin.site.register(Shopper, ShopperAdmin)
 
 
 class ManagerAdmin(admin.ModelAdmin):
-    list_display_links = ('last_name', 'first_name', 'email')
-    list_display = ('last_name', 'first_name', 'email')
+    fieldsets = [
+        (None,
+         {'fields': ['username', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'is_active', 'is_staff']})
+    ]
+
+    list_display_links = ('username', 'first_name', 'last_name', 'email')
+    list_display = ('username', 'first_name', 'last_name', 'email')
     list_per_page = 50
-    search_fields = ['last_name']
-    ordering = ['last_name']
+    search_fields = ['first_name', 'last_name', 'username', 'email']
+    ordering = ['username']
 
 
 admin.site.register(Manager, ManagerAdmin)

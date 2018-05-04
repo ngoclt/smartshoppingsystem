@@ -29,3 +29,4 @@ class ShopperForm(forms.ModelForm):
                   'zip_code',
                   'state',
                   'country')
+
