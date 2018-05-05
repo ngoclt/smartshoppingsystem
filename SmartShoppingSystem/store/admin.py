@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from copy import deepcopy
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -47,6 +49,29 @@ class StoreAdmin(admin.ModelAdmin):
     search_fields = ['name', 'address']
     ordering = ['name']
 
+    def get_fieldsets(self, request, obj=None):
+        """Custom override to exclude fields"""
+        fieldsets = deepcopy(super(StoreAdmin, self).get_fieldsets(request, obj))
+
+        # Append excludes here instead of using self.exclude.
+        # When fieldsets are defined for the user admin, so self.exclude is ignored.
+        exclude = ()
+
+        if not request.user.is_superuser:
+            exclude += ('manager', 'is_active')
+
+        # Iterate fieldsets
+        for fieldset in fieldsets:
+            fieldset_fields = fieldset[1]['fields']
+
+            # Remove excluded fields from the fieldset
+            for exclude_field in exclude:
+                if exclude_field in fieldset_fields:
+                    fieldset_fields = tuple(field for field in fieldset_fields if field != exclude_field)  # Filter
+                    fieldset[1]['fields'] = fieldset_fields  # Store new tuple
+
+        return fieldsets
+
     def get_queryset(self, request):
         qs = super(StoreAdmin, self).get_queryset(request)
         if request.user.is_superuser:
@@ -71,6 +96,14 @@ class ProductAdmin(admin.ModelAdmin):
     # sets up slug to be generated from product name
     prepopulated_fields = {'slug': ('name',)}
 
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if not request.user.is_superuser and db_field.name == "categories":
+            kwargs['queryset'] = Category.objects.filter(
+                store__in=Store.objects.filter(manager=request.user)
+            )
+
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+
     def get_queryset(self, request):
         qs = super(ProductAdmin, self).get_queryset(request)
         if request.user.is_superuser:
@@ -94,6 +127,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
     # sets up slug to be generated from category name
     prepopulated_fields = {'slug': ('name',)}
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser and db_field.name == "store":
+            kwargs['queryset'] = Store.objects.filter(manager=request.user)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_queryset(self, request):
         qs = super(CategoryAdmin, self).get_queryset(request)
