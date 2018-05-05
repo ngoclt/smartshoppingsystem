@@ -2,18 +2,18 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import Manager, Shopper, Store, Product, Category
-from .forms import ProductAdminForm
+from .forms import ProductAdminForm, ManagerAdminCreationForm, ManagerAdminChangeForm
 
 # Register your models here.
 
 
 class ShopperAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None,
-         {'fields': ['username', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'is_active']})
-    ]
+
+    form = ManagerAdminChangeForm
+    add_form = ManagerAdminCreationForm
 
     list_display_links = ('username', 'first_name', 'last_name', 'email')
     list_display = ('username', 'first_name', 'last_name', 'email')
@@ -25,11 +25,10 @@ class ShopperAdmin(admin.ModelAdmin):
 admin.site.register(Shopper, ShopperAdmin)
 
 
-class ManagerAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None,
-         {'fields': ['username', 'email', 'password', 'first_name', 'last_name', 'gender', 'avatar', 'is_active', 'is_staff']})
-    ]
+class ManagerAdmin(BaseUserAdmin):
+
+    form = ManagerAdminChangeForm
+    add_form = ManagerAdminCreationForm
 
     list_display_links = ('username', 'first_name', 'last_name', 'email')
     list_display = ('username', 'first_name', 'last_name', 'email')
