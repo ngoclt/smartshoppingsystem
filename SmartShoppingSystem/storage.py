@@ -4,7 +4,7 @@ import os
 
 class OverwriteStorage(FileSystemStorage):
 
-    def get_available_name(self, name):
+    def get_available_name(self, name, max_length=None):
         """Returns a filename that's free on the target storage system, and
         available for new content to be written to.
 
@@ -26,3 +26,4 @@ class OverwriteStorage(FileSystemStorage):
         if os.path.exists(self.path(name)):
             os.remove(self.path(name))
         return name
+
