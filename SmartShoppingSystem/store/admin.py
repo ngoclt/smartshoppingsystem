@@ -47,6 +47,13 @@ class StoreAdmin(admin.ModelAdmin):
     search_fields = ['name', 'address']
     ordering = ['name']
 
+    def get_queryset(self, request):
+        qs = super(StoreAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        return qs.filter(manager=request.user)
+
 
 admin.site.register(Store, StoreAdmin)
 
@@ -64,6 +71,14 @@ class ProductAdmin(admin.ModelAdmin):
     # sets up slug to be generated from product name
     prepopulated_fields = {'slug': ('name',)}
 
+    def get_queryset(self, request):
+        qs = super(ProductAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        # get products in store that manager is manage
+        return qs.filter(categories__store__in=Store.objects.filter(manager=request.user))
+
 
 admin.site.register(Product, ProductAdmin)
 
@@ -79,6 +94,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
     # sets up slug to be generated from category name
     prepopulated_fields = {'slug': ('name',)}
+
+    def get_queryset(self, request):
+        qs = super(CategoryAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        # get products in store that manager is manage
+        return qs.filter(store__in=Store.objects.filter(manager=request.user))
 
 
 admin.site.register(Category, CategoryAdmin)
