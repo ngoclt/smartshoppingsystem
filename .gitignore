@@ -104,7 +104,13 @@ venv.bak/
 /static
 
 # image upload folder
-media/images/
+media/upload/
 
 # mypy
 .mypy_cache/
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
