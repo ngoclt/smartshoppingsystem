@@ -100,6 +100,10 @@ class Common(Configuration):
         },
     ]
 
+    FIXTURE_DIRS = (
+        join(os.path.dirname(BASE_DIR), 'fixtures')
+    )
+
     # Set DEBUG to False as a default for safety
     # https://docs.djangoproject.com/en/dev/ref/settings/#debug
     DEBUG = strtobool(os.getenv('DJANGO_DEBUG', 'no'))
