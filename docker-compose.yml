@@ -3,6 +3,8 @@ version: '2'
 services:
   postgres:
     image: postgres:9.6
+    stdin_open: true
+    tty: true
   web:
     restart: always
     environment:
