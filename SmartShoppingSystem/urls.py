@@ -5,11 +5,11 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
-from .users.views import UserViewSet, UserCreateViewSet
+from .store.views import ShopperViewSet, ShopperCreateViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'users', UserCreateViewSet)
+router.register(r'shoppers', ShopperViewSet)
+router.register(r'shoppers', ShopperCreateViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,3 +22,7 @@ urlpatterns = [
     re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = "Smart Shopping System"
+admin.site.site_title = "Store Management Portal"
+admin.site.index_title = "Welcome to Smart Shopping System"
