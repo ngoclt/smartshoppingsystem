@@ -1,8 +1,8 @@
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import AllowAny
-from .models import Shopper
+from .models import Shopper, Store
 from SmartShoppingSystem.users.permissions import IsUserOrReadOnly
-from .serializers import CreateUserSerializer, UserSerializer
+from .serializers import CreateUserSerializer, UserSerializer, StoreSerializer
 
 
 class ShopperViewSet(mixins.RetrieveModelMixin,
@@ -24,3 +24,14 @@ class ShopperCreateViewSet(mixins.CreateModelMixin,
     queryset = Shopper.objects.all()
     serializer_class = CreateUserSerializer
     permission_classes = (AllowAny,)
+
+
+class StoreViewSet(mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+    """
+        Retrives stores
+    """
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializer
+    permission_classes = (AllowAny,)
+

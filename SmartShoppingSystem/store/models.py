@@ -44,7 +44,7 @@ class Store(models.Model):
     name = models.CharField(max_length=100, blank=True, default='')
     address = models.CharField(max_length=300, blank=True, default='')
     phone = models.CharField(max_length=30, blank=True, default='')
-    manager = models.ManyToManyField(Manager)
+    manager = models.ManyToManyField(Manager, blank=True)
     cover = models.ImageField(storage=OverwriteStorage(), upload_to='upload/images/stores', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -133,3 +133,32 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Beacon(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    beaconId = models.CharField(max_length=255, null=False, unique=True)
+    store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class Notification(models.Model):
+    title = models.CharField(max_length=255, null=False)
+    message = models.CharField(max_length=255, null=False)
+    beacons = models.ManyToManyField(Beacon, blank=True)
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
+
+

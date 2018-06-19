@@ -2,7 +2,7 @@ from django import forms
 from .models import Manager, Shopper, Product
 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
+from django.contrib.auth.models import Group
 
 class ProductAdminForm(forms.ModelForm):
     """ ModelForm class to validate product instance data before saving from admin interface """
@@ -32,6 +32,14 @@ class ShopperForm(forms.ModelForm):
                   'state',
                   'country')
 
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super(ShopperForm, self).save(commit=False)
+        group, created = Group.objects.get_or_create(name='Shopper')
+        user.groups.add(group)
+        user.save()
+        return user
+
 
 class ManagerAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -51,13 +59,6 @@ class ManagerAdminCreationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
         return password2
 
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super(ManagerAdminCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
 
 
 class ManagerAdminChangeForm(forms.ModelForm):
@@ -79,3 +80,12 @@ class ManagerAdminChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super(ManagerAdminChangeForm, self).save(commit=False)
+        group, created = Group.objects.get_or_create(name='Store Manager')
+        user.groups.add(group)
+        if commit:
+            user.save()
+        return user

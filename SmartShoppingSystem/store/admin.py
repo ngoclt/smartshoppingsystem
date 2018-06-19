@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Manager, Shopper, Store, Product, Category
+from .models import Manager, Shopper, Store, Product, Category, Beacon, Notification
 from .forms import ProductAdminForm, ManagerAdminCreationForm, ManagerAdminChangeForm
 
 # Register your models here.
@@ -144,3 +144,59 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category, CategoryAdmin)
+
+
+class BeaconAdmin(admin.ModelAdmin):
+    # sets up values for how admin site lists categories
+    list_display = ('name', 'beaconId',)
+    list_per_page = 20
+    ordering = ['name']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser and db_field.name == "store":
+            kwargs['queryset'] = Store.objects.filter(manager=request.user)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super(BeaconAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        # get products in store that manager is manage
+        return qs.filter(store__in=Store.objects.filter(manager=request.user))
+
+
+admin.site.register(Beacon, BeaconAdmin)
+
+
+class NotificationAdmin(admin.ModelAdmin):
+    # sets up values for how admin site lists categories
+    list_per_page = 20
+    list_display = ('title', 'message', 'get_beacons')
+    ordering = ['title']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser and db_field.name == "store":
+            kwargs['queryset'] = Store.objects.filter(manager=request.user)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super(NotificationAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        # get products in store that manager is manage
+        return qs.filter(store__in=Store.objects.filter(manager=request.user))
+
+    def get_beacons(self, obj):
+        if obj.beacons:
+            return ", ".join(beacon.name for beacon in obj.beacons.all())
+        else:
+            return 'None'
+
+    get_beacons.short_description = 'Beacons'
+
+
+admin.site.register(Notification, NotificationAdmin)

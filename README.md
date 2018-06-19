@@ -73,3 +73,21 @@ git push origin master
 ```
 
 You're now ready to continuously ship! ✨ 💅 🛳
+
+Some commands needed for project:
+
+```bash
+cat dump.sql | docker exec -i --user postgres `docker-compose ps -q db` psql
+
+docker exec -i "postgres" pg_restore -C --clean --no-acl --no-owner -U "postgres" -d "postgres" < "backup/dump.sql"
+
+
+docker exec -i "/smartshoppingsystem_postgres_1" pg_restore -C --clean --no-acl --no-owner -U "postgres" -d "postgres" < "backup/dump"
+
+docker exec -t "/smartshoppingsystem_postgres_1" pg_dump -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+
+
+docker-compose run --rm web ./manage.py makemigrations
+
+docker-compose run --rm web ./manage.py migrate
+```
