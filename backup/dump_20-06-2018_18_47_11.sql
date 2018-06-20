@@ -1,52 +1,4 @@
 --
--- PostgreSQL database cluster dump
---
-
-SET default_transaction_read_only = off;
-
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-
---
--- Drop databases
---
-
-
-
-
-
---
--- Drop roles
---
-
-DROP ROLE postgres;
-
-
---
--- Roles
---
-
-CREATE ROLE postgres;
-ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS;
-
-
-
-
-
-
---
--- Database creation
---
-
-REVOKE CONNECT,TEMPORARY ON DATABASE template1 FROM PUBLIC;
-GRANT CONNECT ON DATABASE template1 TO PUBLIC;
-
-
-\connect postgres
-
-SET default_transaction_read_only = off;
-
---
 -- PostgreSQL database dump
 --
 
@@ -63,11 +15,172 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.users_user_user_permissions DROP CONSTRAINT users_user_user_permissions_user_id_20aca447_fk_users_user_id;
+ALTER TABLE ONLY public.users_user_user_permissions DROP CONSTRAINT users_user_user_perm_permission_id_0b93982e_fk_auth_perm;
+ALTER TABLE ONLY public.users_user_groups DROP CONSTRAINT users_user_groups_user_id_5f6f5a90_fk_users_user_id;
+ALTER TABLE ONLY public.users_user_groups DROP CONSTRAINT users_user_groups_group_id_9afc8d0e_fk_auth_group_id;
+ALTER TABLE ONLY public.store_store_manager DROP CONSTRAINT store_store_manager_store_id_628863e8_fk_store_store_id;
+ALTER TABLE ONLY public.store_store_manager DROP CONSTRAINT store_store_manager_manager_id_248611e0_fk_store_man;
+ALTER TABLE ONLY public.store_shopper DROP CONSTRAINT store_shopper_user_ptr_id_47722f00_fk_users_user_id;
+ALTER TABLE ONLY public.store_notification DROP CONSTRAINT store_notification_store_id_09ea8af6_fk_store_store_id;
+ALTER TABLE ONLY public.store_notification DROP CONSTRAINT store_notification_product_id_03b6a902_fk_products_id;
+ALTER TABLE ONLY public.store_notification DROP CONSTRAINT store_notification_category_id_42c187c7_fk_categories_id;
+ALTER TABLE ONLY public.store_notification_beacons DROP CONSTRAINT store_notification_b_notification_id_1b2c3bb2_fk_store_not;
+ALTER TABLE ONLY public.store_notification_beacons DROP CONSTRAINT store_notification_b_beacon_id_f4434616_fk_store_bea;
+ALTER TABLE ONLY public.store_manager DROP CONSTRAINT store_manager_user_ptr_id_3c33274d_fk_users_user_id;
+ALTER TABLE ONLY public.store_beacon DROP CONSTRAINT store_beacon_store_id_48909fb4_fk_store_store_id;
+ALTER TABLE ONLY public.products_categories DROP CONSTRAINT products_categories_product_id_14cbb9b0_fk_products_id;
+ALTER TABLE ONLY public.products_categories DROP CONSTRAINT products_categories_category_id_a3d618ca_fk_categories_id;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_user_id_c564eba6_fk_users_user_id;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co;
+ALTER TABLE ONLY public.categories DROP CONSTRAINT categories_store_id_992205ed_fk_store_store_id;
+ALTER TABLE ONLY public.authtoken_token DROP CONSTRAINT authtoken_token_user_id_35299eff_fk_users_user_id;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm;
+DROP INDEX public.users_user_username_06e46fe6_like;
+DROP INDEX public.users_user_user_permissions_user_id_20aca447;
+DROP INDEX public.users_user_user_permissions_permission_id_0b93982e;
+DROP INDEX public.users_user_groups_user_id_5f6f5a90;
+DROP INDEX public.users_user_groups_group_id_9afc8d0e;
+DROP INDEX public.store_store_manager_store_id_628863e8;
+DROP INDEX public.store_store_manager_manager_id_248611e0;
+DROP INDEX public.store_notification_store_id_09ea8af6;
+DROP INDEX public.store_notification_product_id_03b6a902;
+DROP INDEX public.store_notification_category_id_42c187c7;
+DROP INDEX public.store_notification_beacons_notification_id_1b2c3bb2;
+DROP INDEX public.store_notification_beacons_beacon_id_f4434616;
+DROP INDEX public.store_beacon_store_id_48909fb4;
+DROP INDEX public.store_beacon_name_dbd114d3_like;
+DROP INDEX public."store_beacon_beaconId_813ba65b_like";
+DROP INDEX public.products_slug_8f20884e_like;
+DROP INDEX public.products_name_4a89b61d_like;
+DROP INDEX public.products_categories_product_id_14cbb9b0;
+DROP INDEX public.products_categories_category_id_a3d618ca;
+DROP INDEX public.django_session_session_key_c0390e0f_like;
+DROP INDEX public.django_session_expire_date_a5c62663;
+DROP INDEX public.django_admin_log_user_id_c564eba6;
+DROP INDEX public.django_admin_log_content_type_id_c4bce8eb;
+DROP INDEX public.categories_store_id_992205ed;
+DROP INDEX public.categories_slug_9bedfe6b_like;
+DROP INDEX public.authtoken_token_key_10f0b77e_like;
+DROP INDEX public.auth_permission_content_type_id_2f476e4b;
+DROP INDEX public.auth_group_permissions_permission_id_84c5c92e;
+DROP INDEX public.auth_group_permissions_group_id_b120cbf9;
+DROP INDEX public.auth_group_name_a6ea08ec_like;
+ALTER TABLE ONLY public.users_user DROP CONSTRAINT users_user_username_key;
+ALTER TABLE ONLY public.users_user_user_permissions DROP CONSTRAINT users_user_user_permissions_user_id_permission_id_43338c45_uniq;
+ALTER TABLE ONLY public.users_user_user_permissions DROP CONSTRAINT users_user_user_permissions_pkey;
+ALTER TABLE ONLY public.users_user DROP CONSTRAINT users_user_pkey;
+ALTER TABLE ONLY public.users_user_groups DROP CONSTRAINT users_user_groups_user_id_group_id_b88eab82_uniq;
+ALTER TABLE ONLY public.users_user_groups DROP CONSTRAINT users_user_groups_pkey;
+ALTER TABLE ONLY public.store_store DROP CONSTRAINT store_store_pkey;
+ALTER TABLE ONLY public.store_store_manager DROP CONSTRAINT store_store_manager_store_id_manager_id_24c86642_uniq;
+ALTER TABLE ONLY public.store_store_manager DROP CONSTRAINT store_store_manager_pkey;
+ALTER TABLE ONLY public.store_shopper DROP CONSTRAINT store_shopper_pkey;
+ALTER TABLE ONLY public.store_notification DROP CONSTRAINT store_notification_pkey;
+ALTER TABLE ONLY public.store_notification_beacons DROP CONSTRAINT store_notification_beacons_pkey;
+ALTER TABLE ONLY public.store_notification_beacons DROP CONSTRAINT store_notification_beaco_notification_id_beacon_i_90f9566f_uniq;
+ALTER TABLE ONLY public.store_manager DROP CONSTRAINT store_manager_pkey;
+ALTER TABLE ONLY public.store_beacon DROP CONSTRAINT store_beacon_pkey;
+ALTER TABLE ONLY public.store_beacon DROP CONSTRAINT store_beacon_name_key;
+ALTER TABLE ONLY public.store_beacon DROP CONSTRAINT "store_beacon_beaconId_key";
+ALTER TABLE ONLY public.products DROP CONSTRAINT products_slug_key;
+ALTER TABLE ONLY public.products DROP CONSTRAINT products_pkey;
+ALTER TABLE ONLY public.products DROP CONSTRAINT products_name_key;
+ALTER TABLE ONLY public.products_categories DROP CONSTRAINT products_categories_product_id_category_id_1475aa05_uniq;
+ALTER TABLE ONLY public.products_categories DROP CONSTRAINT products_categories_pkey;
+ALTER TABLE ONLY public.django_session DROP CONSTRAINT django_session_pkey;
+ALTER TABLE ONLY public.django_migrations DROP CONSTRAINT django_migrations_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_pkey;
+ALTER TABLE ONLY public.categories DROP CONSTRAINT categories_slug_key;
+ALTER TABLE ONLY public.categories DROP CONSTRAINT categories_pkey;
+ALTER TABLE ONLY public.authtoken_token DROP CONSTRAINT authtoken_token_user_id_key;
+ALTER TABLE ONLY public.authtoken_token DROP CONSTRAINT authtoken_token_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_name_key;
+ALTER TABLE public.users_user_user_permissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.users_user_groups ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.store_store_manager ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.store_store ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.store_notification_beacons ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.store_notification ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.store_beacon ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.products_categories ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.products ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_migrations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_content_type ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_admin_log ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.categories ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_permission ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group_permissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.users_user_user_permissions_id_seq;
+DROP TABLE public.users_user_user_permissions;
+DROP SEQUENCE public.users_user_groups_id_seq;
+DROP TABLE public.users_user_groups;
+DROP TABLE public.users_user;
+DROP SEQUENCE public.store_store_manager_id_seq;
+DROP TABLE public.store_store_manager;
+DROP SEQUENCE public.store_store_id_seq;
+DROP TABLE public.store_store;
+DROP TABLE public.store_shopper;
+DROP SEQUENCE public.store_notification_id_seq;
+DROP SEQUENCE public.store_notification_beacons_id_seq;
+DROP TABLE public.store_notification_beacons;
+DROP TABLE public.store_notification;
+DROP TABLE public.store_manager;
+DROP SEQUENCE public.store_beacon_id_seq;
+DROP TABLE public.store_beacon;
+DROP SEQUENCE public.products_id_seq;
+DROP SEQUENCE public.products_categories_id_seq;
+DROP TABLE public.products_categories;
+DROP TABLE public.products;
+DROP TABLE public.django_session;
+DROP SEQUENCE public.django_migrations_id_seq;
+DROP TABLE public.django_migrations;
+DROP SEQUENCE public.django_content_type_id_seq;
+DROP TABLE public.django_content_type;
+DROP SEQUENCE public.django_admin_log_id_seq;
+DROP TABLE public.django_admin_log;
+DROP SEQUENCE public.categories_id_seq;
+DROP TABLE public.categories;
+DROP TABLE public.authtoken_token;
+DROP SEQUENCE public.auth_permission_id_seq;
+DROP TABLE public.auth_permission;
+DROP SEQUENCE public.auth_group_permissions_id_seq;
+DROP TABLE public.auth_group_permissions;
+DROP SEQUENCE public.auth_group_id_seq;
+DROP TABLE public.auth_group;
+DROP EXTENSION plpgsql;
+DROP SCHEMA public;
 --
 -- Name: DATABASE postgres; Type: COMMENT; Schema: -; Owner: postgres
 --
 
 COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 --
@@ -452,6 +565,41 @@ ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
 
 --
+-- Name: store_beacon; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.store_beacon (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    "beaconId" character varying(255) NOT NULL,
+    store_id integer NOT NULL
+);
+
+
+ALTER TABLE public.store_beacon OWNER TO postgres;
+
+--
+-- Name: store_beacon_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.store_beacon_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_beacon_id_seq OWNER TO postgres;
+
+--
+-- Name: store_beacon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.store_beacon_id_seq OWNED BY public.store_beacon.id;
+
+
+--
 -- Name: store_manager; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -462,6 +610,77 @@ CREATE TABLE public.store_manager (
 
 
 ALTER TABLE public.store_manager OWNER TO postgres;
+
+--
+-- Name: store_notification; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.store_notification (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    message character varying(255) NOT NULL,
+    store_id integer NOT NULL,
+    category_id integer,
+    product_id integer
+);
+
+
+ALTER TABLE public.store_notification OWNER TO postgres;
+
+--
+-- Name: store_notification_beacons; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.store_notification_beacons (
+    id integer NOT NULL,
+    notification_id integer NOT NULL,
+    beacon_id integer NOT NULL
+);
+
+
+ALTER TABLE public.store_notification_beacons OWNER TO postgres;
+
+--
+-- Name: store_notification_beacons_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.store_notification_beacons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_notification_beacons_id_seq OWNER TO postgres;
+
+--
+-- Name: store_notification_beacons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.store_notification_beacons_id_seq OWNED BY public.store_notification_beacons.id;
+
+
+--
+-- Name: store_notification_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.store_notification_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_notification_id_seq OWNER TO postgres;
+
+--
+-- Name: store_notification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.store_notification_id_seq OWNED BY public.store_notification.id;
+
 
 --
 -- Name: store_shopper; Type: TABLE; Schema: public; Owner: postgres
@@ -708,6 +927,27 @@ ALTER TABLE ONLY public.products_categories ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: store_beacon id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_beacon ALTER COLUMN id SET DEFAULT nextval('public.store_beacon_id_seq'::regclass);
+
+
+--
+-- Name: store_notification id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification ALTER COLUMN id SET DEFAULT nextval('public.store_notification_id_seq'::regclass);
+
+
+--
+-- Name: store_notification_beacons id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification_beacons ALTER COLUMN id SET DEFAULT nextval('public.store_notification_beacons_id_seq'::regclass);
+
+
+--
 -- Name: store_store id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -740,6 +980,7 @@ ALTER TABLE ONLY public.users_user_user_permissions ALTER COLUMN id SET DEFAULT 
 --
 
 COPY public.auth_group (id, name) FROM stdin;
+68	Store Manager
 \.
 
 
@@ -747,7 +988,7 @@ COPY public.auth_group (id, name) FROM stdin;
 -- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+SELECT pg_catalog.setval('public.auth_group_id_seq', 68, true);
 
 
 --
@@ -809,6 +1050,12 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 37	Can add Shopper	13	add_shopper
 38	Can change Shopper	13	change_shopper
 39	Can delete Shopper	13	delete_shopper
+40	Can add notification	14	add_notification
+41	Can change notification	14	change_notification
+42	Can delete notification	14	delete_notification
+43	Can add beacon	15	add_beacon
+44	Can change beacon	15	change_beacon
+45	Can delete beacon	15	delete_beacon
 \.
 
 
@@ -816,7 +1063,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 39, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 45, true);
 
 
 --
@@ -892,6 +1139,26 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 38	2018-05-05 12:41:58.3055+00	32f8f448-c9d2-454d-a1d9-a7849726c822	test	3		11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
 39	2018-05-05 12:42:13.565477+00	d977fef2-b623-45dc-970f-eb5d4a956c25	test	1	[{"added": {}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
 40	2018-05-06 18:09:17.245465+00	a8cbfad4-beba-4b38-8a54-c2b6ebb90e39	ngocuser	3		7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+41	2018-06-07 19:39:29.205047+00	e08b413d-b7de-478d-84b6-c94f8c033c46	storemanager1	3		7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+42	2018-06-07 19:39:44.020638+00	c47c22ed-6fe2-488f-b86c-49b0f445f374	ngoclt	3		7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+43	2018-06-07 19:39:44.024138+00	d977fef2-b623-45dc-970f-eb5d4a956c25	test	3		7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+44	2018-06-07 19:39:44.026368+00	f9f009e0-1af9-46e6-a385-d0d836332ee2	zaramanager	3		7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+45	2018-06-07 19:40:40.562642+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72	storemanager	1	[{"added": {}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+46	2018-06-07 19:41:06.573567+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72	storemanager	2	[{"changed": {"fields": ["first_name", "last_name", "last_login"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+47	2018-06-07 19:42:37.628436+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72	storemanager	2	[{"changed": {"fields": ["is_staff", "user_permissions"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+48	2018-06-18 05:59:50.444444+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72	storemanager	2	[{"changed": {"fields": ["user_permissions"]}}]	7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+49	2018-06-18 06:00:24.495222+00	324511a2-ae25-4c0e-a77b-676454fea9ae	hmmanager	2	[{"changed": {"fields": ["user_permissions"]}}]	7	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+50	2018-06-18 13:14:08.414032+00	8cdf3335-4e68-43c3-bfd7-96218d450bf4	managertest	1	[{"added": {}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+51	2018-06-18 13:16:44.269716+00	8cdf3335-4e68-43c3-bfd7-96218d450bf4	managertest	2	[{"changed": {"fields": ["first_name", "last_name", "user_permissions", "last_login"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+52	2018-06-18 13:16:55.952744+00	8cdf3335-4e68-43c3-bfd7-96218d450bf4	managertest	2	[{"changed": {"fields": ["groups"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+53	2018-06-18 13:17:05.315167+00	b6564e33-36ed-42a0-af47-c27c267c00be	storemanager2	1	[{"added": {}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+54	2018-06-18 13:18:12.793995+00	b6564e33-36ed-42a0-af47-c27c267c00be	storemanager2	2	[{"changed": {"fields": ["first_name", "last_name", "is_staff", "user_permissions", "last_login"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+55	2018-06-18 13:18:46.420243+00	b6564e33-36ed-42a0-af47-c27c267c00be	storemanager2	2	[{"changed": {"fields": ["groups"]}}]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+56	2018-06-18 13:18:58.356104+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72	storemanager	2	[]	11	ff3f0007-ab9a-4906-b09e-d56328d0a6b0
+57	2018-06-19 07:57:56.739994+00	1	Beacon at Entrance	1	[{"added": {}}]	15	324511a2-ae25-4c0e-a77b-676454fea9ae
+58	2018-06-19 08:01:25.383887+00	2	Beacon at Checkout	1	[{"added": {}}]	15	324511a2-ae25-4c0e-a77b-676454fea9ae
+59	2018-06-19 08:03:32.792468+00	1	Welcome to H&M at Itis, new deals for you here	1	[{"added": {}}]	14	324511a2-ae25-4c0e-a77b-676454fea9ae
+60	2018-06-19 13:15:41.549841+00	1	Welcome to H&M at Itis, new deals for you here	2	[{"changed": {"fields": ["beacons"]}}]	14	324511a2-ae25-4c0e-a77b-676454fea9ae
 \.
 
 
@@ -899,7 +1166,7 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 40, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 60, true);
 
 
 --
@@ -920,6 +1187,8 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 11	store	manager
 12	store	store
 13	store	shopper
+14	store	notification
+15	store	beacon
 \.
 
 
@@ -927,7 +1196,7 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 13, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 15, true);
 
 
 --
@@ -957,6 +1226,10 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 20	store	0002_auto_20180503_2028	2018-05-03 20:28:27.493972+00
 21	store	0003_auto_20180503_2054	2018-05-03 20:54:28.941848+00
 22	users	0003_auto_20180503_2054	2018-05-03 20:54:29.000967+00
+23	store	0004_beacon_notification	2018-06-18 05:57:41.999553+00
+24	store	0005_auto_20180618_1309	2018-06-18 13:09:56.311352+00
+57	store	0006_auto_20180619_0831	2018-06-19 08:31:49.476767+00
+58	store	0007_auto_20180619_1314	2018-06-19 13:14:29.186523+00
 \.
 
 
@@ -964,7 +1237,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 22, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 58, true);
 
 
 --
@@ -976,6 +1249,7 @@ i3uyqqlokiusn2g53adk54v40hnljl7d	NzEwMGU4OWQ0Y2Y5ZDVkNjg4OWJkZDcxMDMzNmM2MmVjNGQ
 kmyy7c07xi6iihgg1w3yyxgrj9fwyrl2	NzEwMGU4OWQ0Y2Y5ZDVkNjg4OWJkZDcxMDMzNmM2MmVjNGQ2NDBlYjp7Il9hdXRoX3VzZXJfaWQiOiJmZjNmMDAwNy1hYjlhLTQ5MDYtYjA5ZS1kNTYzMjhkMGE2YjAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImY5NzM4YmQ4NjFjZTIxMjUxNmM3NGE5MjJhZTcxNmM3YWIzZmMzNmQifQ==	2018-05-17 20:18:26.706554+00
 l5junj4xrri8olvsqk74j5cssip01k3f	NzEwMGU4OWQ0Y2Y5ZDVkNjg4OWJkZDcxMDMzNmM2MmVjNGQ2NDBlYjp7Il9hdXRoX3VzZXJfaWQiOiJmZjNmMDAwNy1hYjlhLTQ5MDYtYjA5ZS1kNTYzMjhkMGE2YjAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImY5NzM4YmQ4NjFjZTIxMjUxNmM3NGE5MjJhZTcxNmM3YWIzZmMzNmQifQ==	2018-05-19 09:44:49.525965+00
 8dimwp4wegg3lu1i7m3jgx9mp8ik672l	ZjcyMGI4NTI2MTRiNjZkODNkNDMxMGZlZTBjMTUyYTBhMzg5MWI2Yjp7Il9hdXRoX3VzZXJfaWQiOiIzMjQ1MTFhMi1hZTI1LTRjMGUtYTc3Yi02NzY0NTRmZWE5YWUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjYyMGJhNjc0MTcxOGMyMTVkMDZhMmNiZmQ1ZTdhOWVlMTE0NWFiZWQifQ==	2018-05-19 10:38:35.088355+00
+d41qozlgellw39kyy88dp4fnvca9ytbs	NzEwMGU4OWQ0Y2Y5ZDVkNjg4OWJkZDcxMDMzNmM2MmVjNGQ2NDBlYjp7Il9hdXRoX3VzZXJfaWQiOiJmZjNmMDAwNy1hYjlhLTQ5MDYtYjA5ZS1kNTYzMjhkMGE2YjAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImY5NzM4YmQ4NjFjZTIxMjUxNmM3NGE5MjJhZTcxNmM3YWIzZmMzNmQifQ==	2018-07-03 14:00:21.761416+00
 \.
 
 
@@ -1022,16 +1296,66 @@ SELECT pg_catalog.setval('public.products_id_seq', 6, true);
 
 
 --
+-- Data for Name: store_beacon; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.store_beacon (id, name, "beaconId", store_id) FROM stdin;
+1	Beacon at Entrance	eaff786a6a8a3a53c0136916842be606	1
+2	Beacon at Checkout	eaff786a6a8b3a33c0136916822be606	1
+\.
+
+
+--
+-- Name: store_beacon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.store_beacon_id_seq', 2, true);
+
+
+--
 -- Data for Name: store_manager; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.store_manager (user_ptr_id, begin_time) FROM stdin;
-e08b413d-b7de-478d-84b6-c94f8c033c46	2018-05-04 13:59:24.008398+00
 5e4aa0ab-0b62-4449-8b56-2f31bb672a20	2018-05-05 10:23:43.930521+00
 324511a2-ae25-4c0e-a77b-676454fea9ae	2018-05-05 10:01:30.883837+00
-f9f009e0-1af9-46e6-a385-d0d836332ee2	2018-05-05 12:07:49.684248+00
-d977fef2-b623-45dc-970f-eb5d4a956c25	2018-05-05 12:42:13.564373+00
+8cdf3335-4e68-43c3-bfd7-96218d450bf4	2018-06-18 13:14:08.410655+00
+b6564e33-36ed-42a0-af47-c27c267c00be	2018-06-18 13:17:05.31347+00
+1bd47513-c82b-4a0d-a555-fba00a0c9f72	2018-06-07 19:40:40.557671+00
 \.
+
+
+--
+-- Data for Name: store_notification; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.store_notification (id, title, message, store_id, category_id, product_id) FROM stdin;
+1	Welcome to H&M at Itis, new deals for you here	Big sales from H&M, there is a new deals for women jackets	1	\N	\N
+\.
+
+
+--
+-- Data for Name: store_notification_beacons; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.store_notification_beacons (id, notification_id, beacon_id) FROM stdin;
+1	1	1
+2	1	2
+\.
+
+
+--
+-- Name: store_notification_beacons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.store_notification_beacons_id_seq', 2, true);
+
+
+--
+-- Name: store_notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.store_notification_id_seq', 1, true);
 
 
 --
@@ -1039,7 +1363,8 @@ d977fef2-b623-45dc-970f-eb5d4a956c25	2018-05-05 12:42:13.564373+00
 --
 
 COPY public.store_shopper (user_ptr_id, address_line, telephone, zip_code, state, country) FROM stdin;
-c47c22ed-6fe2-488f-b86c-49b0f445f374	Kauppakartanonkuja 3 C 26 Itakeskus	0417510791	00930		Finland
+d6bbdd34-8878-4696-ae70-7c78a41c4abb					
+b7131ff4-ece1-4d54-8e4d-fa0996435c87					
 \.
 
 
@@ -1067,7 +1392,6 @@ SELECT pg_catalog.setval('public.store_store_id_seq', 2, true);
 COPY public.store_store_manager (id, store_id, manager_id) FROM stdin;
 1	1	324511a2-ae25-4c0e-a77b-676454fea9ae
 2	2	5e4aa0ab-0b62-4449-8b56-2f31bb672a20
-3	1	e08b413d-b7de-478d-84b6-c94f8c033c46
 \.
 
 
@@ -1084,13 +1408,14 @@ SELECT pg_catalog.setval('public.store_store_manager_id_seq', 3, true);
 
 COPY public.users_user (password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, id, avatar, gender) FROM stdin;
 pbkdf2_sha256$100000$xUWnyY9uFCyA$hxFIhsfM+g42laQsBGpIUKNXhXkdWYSyM9eulr7BXJc=	2018-05-04 21:00:16.055743+00	f	miho	Le	Ngoc	miho@coder.local	t	t	2018-05-04 20:58:54.786992+00	5f35928c-f090-4681-9876-c6483b68d69c		f
-pbkdf2_sha256$100000$keD6D2JC4eS4$7Oyn0qmtRXrjTFHIgL0/1tAOzoMebcs22x7tbBuKWfc=	2018-05-03 20:58:09+00	f	ngoclt	Ngoc	LT	ngoclt@outlook.com	f	t	2018-05-03 20:57:34+00	c47c22ed-6fe2-488f-b86c-49b0f445f374		-
-pbkdf2_sha256$100000$7zvgCwJOoJB3$22CoPK+zNMoZRq6cEFWhesLpsaFtfq4kg1oDaaZ7qEs=	2018-05-04 13:59:01+00	f	storemanager1	Store1	Manager	storemanager1@coder.life	f	t	2018-05-04 13:58:56+00	e08b413d-b7de-478d-84b6-c94f8c033c46		m
+	2018-06-18 13:15:13+00	f	managertest	Manager	Test1		f	t	2018-06-18 13:14:08+00	8cdf3335-4e68-43c3-bfd7-96218d450bf4		-
+	2018-06-18 13:17:15+00	f	storemanager2	Manager	Store2		t	t	2018-06-18 13:17:05+00	b6564e33-36ed-42a0-af47-c27c267c00be		-
 pbkdf2_sha256$100000$HdvoxHAvy7uO$f3ftUrkKMRmNReoIv9wFSIszyJHi+00yqzhmWKE2L4k=	2018-05-05 10:30:20.899525+00	f	ngocle	Ngoc	Le	letuanngoc129@gmail.com	t	t	2018-05-05 10:23:43+00	5e4aa0ab-0b62-4449-8b56-2f31bb672a20		-
-pbkdf2_sha256$100000$HNv3lLlNffA2$o4vxcoZcLSCHs2GLw+1PMA/9LPDrvTCB8U4SN3mpOZo=	2018-05-05 10:38:35.084936+00	f	hmmanager	Mi	Ho	miho@coder.local	t	t	2018-05-05 10:01:30+00	324511a2-ae25-4c0e-a77b-676454fea9ae		-
-pbkdf2_sha256$100000$WG3gTlnESwJ1$tcHLG1mNLk3hB/BVyna6u+U4w1Dqs3UHZJ8GTwgORKY=	2018-05-04 21:00:32.450725+00	t	admin	Admin	Le	letuanngoc129@gmail.com	t	t	2018-05-03 16:37:49+00	ff3f0007-ab9a-4906-b09e-d56328d0a6b0		-
-pbkdf2_sha256$100000$zZV3KucM5Sre$Z941er2c5aRQFIYAlG/+zvU6YPzfJSIQhXrZs8FVHnA=	\N	f	zaramanager				f	t	2018-05-05 12:07:49+00	f9f009e0-1af9-46e6-a385-d0d836332ee2		-
-pbkdf2_sha256$100000$X0O76HMmTHF3$Q2JBCoh0uSZGNI3I4LdhRGqVl+bJHD1gBgRt/2/6FGo=	\N	f	test				f	t	2018-05-05 12:42:13.442652+00	d977fef2-b623-45dc-970f-eb5d4a956c25		-
+pbkdf2_sha256$100000$VPn7f0vGw7a6$In69OJ+vrnMMf9+DwzDgkeh2dY602IAuYMqW1f1rfV0=	2018-06-19 07:49:05.649458+00	f	storemanager	Store	Manager		t	t	2018-06-07 19:40:40+00	1bd47513-c82b-4a0d-a555-fba00a0c9f72		-
+pbkdf2_sha256$100000$HNv3lLlNffA2$o4vxcoZcLSCHs2GLw+1PMA/9LPDrvTCB8U4SN3mpOZo=	2018-06-19 07:50:14.074582+00	f	hmmanager	Mi	Ho	miho@coder.local	t	t	2018-05-05 10:01:30+00	324511a2-ae25-4c0e-a77b-676454fea9ae		-
+pbkdf2_sha256$100000$WG3gTlnESwJ1$tcHLG1mNLk3hB/BVyna6u+U4w1Dqs3UHZJ8GTwgORKY=	2018-06-19 14:00:21.757871+00	t	admin	Admin	Le	letuanngoc129@gmail.com	t	t	2018-05-03 16:37:49+00	ff3f0007-ab9a-4906-b09e-d56328d0a6b0		-
+pbkdf2_sha256$100000$npeSGzFb7ryQ$eYTw/5xqDgEbaA9DDwZ5XaNGYhCwNJeWjreNzLwwmrU=	\N	f	ngoclt				f	t	2018-06-09 12:20:49.21741+00	d6bbdd34-8878-4696-ae70-7c78a41c4abb		-
+pbkdf2_sha256$100000$PhhXq3euz1kI$14+GwQwKdntefFez1dDmlng2RX3qybLxSB29UdFr9J0=	\N	f	user1	User	One		f	t	2018-06-09 13:16:51.407845+00	b7131ff4-ece1-4d54-8e4d-fa0996435c87		-
 \.
 
 
@@ -1099,6 +1424,8 @@ pbkdf2_sha256$100000$X0O76HMmTHF3$Q2JBCoh0uSZGNI3I4LdhRGqVl+bJHD1gBgRt/2/6FGo=	\
 --
 
 COPY public.users_user_groups (id, user_id, group_id) FROM stdin;
+3	8cdf3335-4e68-43c3-bfd7-96218d450bf4	68
+5	b6564e33-36ed-42a0-af47-c27c267c00be	68
 \.
 
 
@@ -1106,7 +1433,7 @@ COPY public.users_user_groups (id, user_id, group_id) FROM stdin;
 -- Name: users_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_user_groups_id_seq', 1, false);
+SELECT pg_catalog.setval('public.users_user_groups_id_seq', 6, true);
 
 
 --
@@ -1128,13 +1455,50 @@ COPY public.users_user_user_permissions (id, user_id, permission_id) FROM stdin;
 12	324511a2-ae25-4c0e-a77b-676454fea9ae	28
 13	324511a2-ae25-4c0e-a77b-676454fea9ae	29
 14	324511a2-ae25-4c0e-a77b-676454fea9ae	30
-15	f9f009e0-1af9-46e6-a385-d0d836332ee2	35
-16	f9f009e0-1af9-46e6-a385-d0d836332ee2	25
-17	f9f009e0-1af9-46e6-a385-d0d836332ee2	26
-18	f9f009e0-1af9-46e6-a385-d0d836332ee2	27
-19	f9f009e0-1af9-46e6-a385-d0d836332ee2	28
-20	f9f009e0-1af9-46e6-a385-d0d836332ee2	29
-21	f9f009e0-1af9-46e6-a385-d0d836332ee2	30
+22	1bd47513-c82b-4a0d-a555-fba00a0c9f72	35
+23	1bd47513-c82b-4a0d-a555-fba00a0c9f72	25
+24	1bd47513-c82b-4a0d-a555-fba00a0c9f72	26
+25	1bd47513-c82b-4a0d-a555-fba00a0c9f72	27
+26	1bd47513-c82b-4a0d-a555-fba00a0c9f72	28
+27	1bd47513-c82b-4a0d-a555-fba00a0c9f72	29
+28	1bd47513-c82b-4a0d-a555-fba00a0c9f72	30
+29	1bd47513-c82b-4a0d-a555-fba00a0c9f72	40
+30	1bd47513-c82b-4a0d-a555-fba00a0c9f72	41
+31	1bd47513-c82b-4a0d-a555-fba00a0c9f72	42
+32	1bd47513-c82b-4a0d-a555-fba00a0c9f72	43
+33	1bd47513-c82b-4a0d-a555-fba00a0c9f72	44
+34	1bd47513-c82b-4a0d-a555-fba00a0c9f72	45
+35	324511a2-ae25-4c0e-a77b-676454fea9ae	40
+36	324511a2-ae25-4c0e-a77b-676454fea9ae	41
+37	324511a2-ae25-4c0e-a77b-676454fea9ae	42
+38	324511a2-ae25-4c0e-a77b-676454fea9ae	43
+39	324511a2-ae25-4c0e-a77b-676454fea9ae	44
+40	324511a2-ae25-4c0e-a77b-676454fea9ae	45
+41	8cdf3335-4e68-43c3-bfd7-96218d450bf4	40
+42	8cdf3335-4e68-43c3-bfd7-96218d450bf4	41
+43	8cdf3335-4e68-43c3-bfd7-96218d450bf4	42
+44	8cdf3335-4e68-43c3-bfd7-96218d450bf4	43
+45	8cdf3335-4e68-43c3-bfd7-96218d450bf4	44
+46	8cdf3335-4e68-43c3-bfd7-96218d450bf4	45
+47	8cdf3335-4e68-43c3-bfd7-96218d450bf4	25
+48	8cdf3335-4e68-43c3-bfd7-96218d450bf4	26
+49	8cdf3335-4e68-43c3-bfd7-96218d450bf4	27
+50	8cdf3335-4e68-43c3-bfd7-96218d450bf4	28
+51	8cdf3335-4e68-43c3-bfd7-96218d450bf4	29
+52	8cdf3335-4e68-43c3-bfd7-96218d450bf4	30
+53	b6564e33-36ed-42a0-af47-c27c267c00be	38
+54	b6564e33-36ed-42a0-af47-c27c267c00be	40
+55	b6564e33-36ed-42a0-af47-c27c267c00be	41
+56	b6564e33-36ed-42a0-af47-c27c267c00be	42
+57	b6564e33-36ed-42a0-af47-c27c267c00be	43
+58	b6564e33-36ed-42a0-af47-c27c267c00be	44
+59	b6564e33-36ed-42a0-af47-c27c267c00be	45
+60	b6564e33-36ed-42a0-af47-c27c267c00be	25
+61	b6564e33-36ed-42a0-af47-c27c267c00be	26
+62	b6564e33-36ed-42a0-af47-c27c267c00be	27
+63	b6564e33-36ed-42a0-af47-c27c267c00be	28
+64	b6564e33-36ed-42a0-af47-c27c267c00be	29
+65	b6564e33-36ed-42a0-af47-c27c267c00be	30
 \.
 
 
@@ -1142,7 +1506,7 @@ COPY public.users_user_user_permissions (id, user_id, permission_id) FROM stdin;
 -- Name: users_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_user_user_permissions_id_seq', 21, true);
+SELECT pg_catalog.setval('public.users_user_user_permissions_id_seq', 65, true);
 
 
 --
@@ -1306,11 +1670,59 @@ ALTER TABLE ONLY public.products
 
 
 --
+-- Name: store_beacon store_beacon_beaconId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_beacon
+    ADD CONSTRAINT "store_beacon_beaconId_key" UNIQUE ("beaconId");
+
+
+--
+-- Name: store_beacon store_beacon_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_beacon
+    ADD CONSTRAINT store_beacon_name_key UNIQUE (name);
+
+
+--
+-- Name: store_beacon store_beacon_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_beacon
+    ADD CONSTRAINT store_beacon_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: store_manager store_manager_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.store_manager
     ADD CONSTRAINT store_manager_pkey PRIMARY KEY (user_ptr_id);
+
+
+--
+-- Name: store_notification_beacons store_notification_beaco_notification_id_beacon_i_90f9566f_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification_beacons
+    ADD CONSTRAINT store_notification_beaco_notification_id_beacon_i_90f9566f_uniq UNIQUE (notification_id, beacon_id);
+
+
+--
+-- Name: store_notification_beacons store_notification_beacons_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification_beacons
+    ADD CONSTRAINT store_notification_beacons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_notification store_notification_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification
+    ADD CONSTRAINT store_notification_pkey PRIMARY KEY (id);
 
 
 --
@@ -1499,6 +1911,62 @@ CREATE INDEX products_slug_8f20884e_like ON public.products USING btree (slug va
 
 
 --
+-- Name: store_beacon_beaconId_813ba65b_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "store_beacon_beaconId_813ba65b_like" ON public.store_beacon USING btree ("beaconId" varchar_pattern_ops);
+
+
+--
+-- Name: store_beacon_name_dbd114d3_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_beacon_name_dbd114d3_like ON public.store_beacon USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: store_beacon_store_id_48909fb4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_beacon_store_id_48909fb4 ON public.store_beacon USING btree (store_id);
+
+
+--
+-- Name: store_notification_beacons_beacon_id_f4434616; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_notification_beacons_beacon_id_f4434616 ON public.store_notification_beacons USING btree (beacon_id);
+
+
+--
+-- Name: store_notification_beacons_notification_id_1b2c3bb2; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_notification_beacons_notification_id_1b2c3bb2 ON public.store_notification_beacons USING btree (notification_id);
+
+
+--
+-- Name: store_notification_category_id_42c187c7; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_notification_category_id_42c187c7 ON public.store_notification USING btree (category_id);
+
+
+--
+-- Name: store_notification_product_id_03b6a902; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_notification_product_id_03b6a902 ON public.store_notification USING btree (product_id);
+
+
+--
+-- Name: store_notification_store_id_09ea8af6; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX store_notification_store_id_09ea8af6 ON public.store_notification USING btree (store_id);
+
+
+--
 -- Name: store_store_manager_manager_id_248611e0; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1620,11 +2088,59 @@ ALTER TABLE ONLY public.products_categories
 
 
 --
+-- Name: store_beacon store_beacon_store_id_48909fb4_fk_store_store_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_beacon
+    ADD CONSTRAINT store_beacon_store_id_48909fb4_fk_store_store_id FOREIGN KEY (store_id) REFERENCES public.store_store(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: store_manager store_manager_user_ptr_id_3c33274d_fk_users_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.store_manager
     ADD CONSTRAINT store_manager_user_ptr_id_3c33274d_fk_users_user_id FOREIGN KEY (user_ptr_id) REFERENCES public.users_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_notification_beacons store_notification_b_beacon_id_f4434616_fk_store_bea; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification_beacons
+    ADD CONSTRAINT store_notification_b_beacon_id_f4434616_fk_store_bea FOREIGN KEY (beacon_id) REFERENCES public.store_beacon(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_notification_beacons store_notification_b_notification_id_1b2c3bb2_fk_store_not; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification_beacons
+    ADD CONSTRAINT store_notification_b_notification_id_1b2c3bb2_fk_store_not FOREIGN KEY (notification_id) REFERENCES public.store_notification(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_notification store_notification_category_id_42c187c7_fk_categories_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification
+    ADD CONSTRAINT store_notification_category_id_42c187c7_fk_categories_id FOREIGN KEY (category_id) REFERENCES public.categories(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_notification store_notification_product_id_03b6a902_fk_products_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification
+    ADD CONSTRAINT store_notification_product_id_03b6a902_fk_products_id FOREIGN KEY (product_id) REFERENCES public.products(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_notification store_notification_store_id_09ea8af6_fk_store_store_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.store_notification
+    ADD CONSTRAINT store_notification_store_id_09ea8af6_fk_store_store_id FOREIGN KEY (store_id) REFERENCES public.store_store(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -1684,56 +2200,13 @@ ALTER TABLE ONLY public.users_user_user_permissions
 
 
 --
--- PostgreSQL database dump complete
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
 
-\connect template1
-
-SET default_transaction_read_only = off;
-
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.6.8
--- Dumped by pg_dump version 9.6.8
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- Name: DATABASE template1; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE template1 IS 'default template for new databases';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
 -- PostgreSQL database dump complete
---
-
---
--- PostgreSQL database cluster dump complete
 --
 
