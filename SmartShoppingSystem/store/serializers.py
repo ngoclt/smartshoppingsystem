@@ -30,19 +30,19 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
-        fields = ('id', 'name', 'address')
+        fields = ('id', 'name', 'address', 'cover')
 
 
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'description')
+        fields = ('id', 'name', 'description', 'thumbnail')
 
 
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Category
+        model = Product
         fields = ('id', 'name', 'description', 'image', 'thumbnail')
 
