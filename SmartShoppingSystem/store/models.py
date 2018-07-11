@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from django.utils.encoding import python_2_unicode_compatible
-
 from SmartShoppingSystem.users.models import User
 
 from SmartShoppingSystem.storage import OverwriteStorage
@@ -20,7 +18,6 @@ class Manager(User):
         verbose_name_plural = "Managers"
 
 
-@python_2_unicode_compatible
 class Shopper(User):
     address_line = models.CharField(max_length=100, blank=True, default='')
     telephone = models.CharField(max_length=100, blank=True, default='')
@@ -35,11 +32,7 @@ class Shopper(User):
     def __unicode__(self):
         return self.last_name + ' ' + self.first_name
 
-    def __str__(self):
-        return self.username
 
-
-@python_2_unicode_compatible
 class Store(models.Model):
     name = models.CharField(max_length=100, blank=True, default='')
     address = models.CharField(max_length=300, blank=True, default='')
@@ -55,9 +48,6 @@ class Store(models.Model):
         ordering = ('name',)
 
     def __unicode__(self):
-        return self.name
-
-    def __str__(self):
         return self.name
 
 
@@ -86,8 +76,6 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
-    def __str__(self):
-        return self.name
 
     @property
     def products(self):
@@ -131,9 +119,6 @@ class Product(models.Model):
     def __unicode__(self):
         return self.name
 
-    def __str__(self):
-        return self.name
-
 
 class Beacon(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -141,9 +126,6 @@ class Beacon(models.Model):
     store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return self.name
-
-    def __str__(self):
         return self.name
 
 
@@ -158,7 +140,14 @@ class Notification(models.Model):
     def __unicode__(self):
         return self.title
 
-    def __str__(self):
-        return self.title
 
+class Interest(models.Model):
+    owner = models.ForeignKey(Shopper, null=False, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __unicode__(self):
+        string = '' if self.product is None else self.product.name
+        string += '' if self.category is None else (", " + self.category.name)
+        return self.owner.first_name + ' likes ' + string
 

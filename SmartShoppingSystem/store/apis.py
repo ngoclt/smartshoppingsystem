@@ -1,14 +1,12 @@
 from rest_framework import viewsets
 from rest_framework import generics, mixins
 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.exceptions import ValidationError
 
 from django.shortcuts import get_object_or_404
 
-from .models import Store, Category, Product, Shopper
-
-from .serializers import StoreSerializer, CategorySerializer, ProductSerializer
-from .serializers import CreateUserSerializer, UserSerializer
+from .serializers import *
 
 from SmartShoppingSystem.users.permissions import IsUserOrReadOnly
 
@@ -69,7 +67,7 @@ class StoreProductListAPIView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         store = get_object_or_404(Store, id=pk)
-        queryset = Product.objects.filter(categories__store=store)
+        queryset = Product.objects.filter(categories__store=store).distinct()
         return queryset
 
 
@@ -83,7 +81,7 @@ class StoreCategoryListAPIView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         store = get_object_or_404(Store, id=pk)
-        queryset = Category.objects.filter(store=store)
+        queryset = Category.objects.filter(store=store).distinct()
         return queryset
 
 
@@ -97,6 +95,30 @@ class CatetgoryProductListAPIView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         category = get_object_or_404(Category, id=pk)
-        queryset = Product.objects.filter(categories=category)
+        queryset = Product.objects.filter(categories=category).distinct()
         return queryset
+
+
+class NotificationListAPIView(generics.ListAPIView):
+    """
+        List products in store
+    """
+    serializer_class = NotificationSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Notification.objects.all()
+        return queryset
+
+
+class InterestCreateAPIView(generics.CreateAPIView):
+    """
+        Create interest for user
+    """
+    queryset = Interest.objects.all()
+    serializer_class = CreateInterestSerializer
+    permission_classes = (IsAuthenticated,)
+
+
 
