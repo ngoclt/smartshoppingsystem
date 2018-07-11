@@ -66,6 +66,8 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 
 class InterestSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = Shopper
@@ -73,38 +75,12 @@ class InterestSerializer(serializers.ModelSerializer):
 
 
 class CreateInterestSerializer(serializers.ModelSerializer):
-
+    product = ProductSerializer()
+    category = CategorySerializer()
+    
     class Meta:
-        model = Shopper
-        fields = ('product', 'category')
+        model = Interest
+        fields = ('id', 'product', 'category')
 
-    def validate_product(self, value):
-        if not value:
-            product = Product.objects.get(pk=value)
-            if not product:
-                raise serializers.ValidationError("Product ID is invalid.")
-
-        return product
-
-    def validate_category(self, value):
-        if not value:
-            self.category = Category.objects.get(pk=category)
-            if not category:
-                raise serializers.ValidationError("Category ID is invalid.")
-
-    def validate(self, data):
-        if not category and not product:
-            raise serializers.ValidationError("Product ID or Category ID is required.")
-        return data
-
-    def create(self, validated_data):
-        interest_data = {
-            'product': self.product,
-            'category': self.category,
-            'owner': self.request.user
-
-        }
-        interest_serializer = CreateInterestSerializer(data=interest_data)
-        return Interest.objects.create(**interest)
 
 

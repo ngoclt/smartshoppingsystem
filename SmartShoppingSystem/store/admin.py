@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Manager, Shopper, Store, Product, Category, Beacon, Notification
+from .models import Manager, Shopper, Store, Product, Category, Beacon, Notification, Interest
 from .forms import ProductAdminForm, ManagerAdminCreationForm, ManagerAdminChangeForm
 
 # Register your models here.
@@ -200,3 +200,13 @@ class NotificationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Notification, NotificationAdmin)
+
+
+class InterestAdmin(admin.ModelAdmin):
+    # sets up values for how admin site lists categories
+    list_per_page = 20
+
+
+admin.site.register(Interest, InterestAdmin)
+
+

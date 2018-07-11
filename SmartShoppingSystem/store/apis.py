@@ -1,14 +1,19 @@
 from rest_framework import viewsets
-from rest_framework import generics, mixins
+from rest_framework import generics, status, mixins
+from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.exceptions import ValidationError
 
 from django.shortcuts import get_object_or_404
 
 from .serializers import *
 
 from SmartShoppingSystem.users.permissions import IsUserOrReadOnly
+
+class BadRequest(APIException):
+    status_code = 400
+    default_detail = 'Bad request'
 
 
 class ShopperViewSet(mixins.RetrieveModelMixin,
@@ -112,13 +117,53 @@ class NotificationListAPIView(generics.ListAPIView):
         return queryset
 
 
-class InterestCreateAPIView(generics.CreateAPIView):
+class InterestListCreateAPIView(generics.ListCreateAPIView):
     """
-        Create interest for user
+        Create & delete interest for user
     """
     queryset = Interest.objects.all()
     serializer_class = CreateInterestSerializer
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        ret = super(InterestListCreateAPIView, self).get_queryset()
+        return ret.filter(owner__id=self.request.user.id)
+
+    def post(self, request, *args, **kwargs):
+        product = request.data.get('product', None)
+        category = request.data.get('category', None)
+
+        if not product and not category:
+            raise BadRequest('Product or Category is required.')
+
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            shopper = get_object_or_404(Shopper, pk=self.request.user)
+            queryset = Interest.objects.filter(owner=shopper, product=product, category=category)
+
+            if queryset.count() == 0:
+                serializer.save(owner=shopper)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            else:
+                raise BadRequest('Product or Category is liked already.')
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class InterestDestroyAPIView(generics.DestroyAPIView):
+    queryset = Interest.objects.all()
+    serializer_class = InterestSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+
+
+
 
 
 
