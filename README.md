@@ -76,17 +76,23 @@ You're now ready to continuously ship! ✨ 💅 🛳
 
 Some commands needed for project:
 
+### Drop database 
 ```bash
-cat dump.sql | docker exec -i --user postgres `docker-compose ps -q db` psql
+docker-compose rm postgres
+docker-compose down
+```
 
-docker exec -i "postgres" pg_restore -C --clean --no-acl --no-owner -U "postgres" -d "postgres" < "backup/dump.sql"
+### Backup and Restore
+```bash
+docker exec smartshoppingsystem_postgres_1 /usr/bin/pg_dump \
+  -U postgres postgres > backup/backup.sql
 
 
-docker exec -i "/smartshoppingsystem_postgres_1" pg_restore -C --clean --no-acl --no-owner -U "postgres" -d "postgres" < "backup/dump"
+cat backup/backup.sql | docker exec -i smartshoppingsystem_postgres_1 /usr/bin/psql -U postgres postgres
+```
 
-docker exec -t "/smartshoppingsystem_postgres_1" pg_dump -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
-
-
+### Migrate database
+```bash
 docker-compose run --rm web ./manage.py makemigrations
 
 docker-compose run --rm web ./manage.py migrate
