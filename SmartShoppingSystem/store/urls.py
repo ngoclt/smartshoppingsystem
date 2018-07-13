@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^interests/$', csrf_exempt(InterestListCreateAPIView.as_view())),
     url(r'^interests/(?P<pk>[0-9]+)/$', csrf_exempt(InterestDestroyAPIView.as_view())),
     url(r'^notifications/$', NotificationListAPIView.as_view()),
+    url(r'^beacons/(?P<beacon_id>[-\w]+)/$', BeaconAPIView.as_view()),
 ] + router.urls

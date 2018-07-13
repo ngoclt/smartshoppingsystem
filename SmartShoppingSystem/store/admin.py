@@ -148,7 +148,7 @@ admin.site.register(Category, CategoryAdmin)
 
 class BeaconAdmin(admin.ModelAdmin):
     # sets up values for how admin site lists categories
-    list_display = ('name', 'beaconId',)
+    list_display = ('name', 'beacon_id',)
     list_per_page = 20
     ordering = ['name']
 
@@ -174,7 +174,7 @@ class NotificationAdmin(admin.ModelAdmin):
     # sets up values for how admin site lists categories
     list_per_page = 20
     list_display = ('title', 'message', 'get_beacons')
-    ordering = ['title']
+    ordering = ['expired_at']
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if not request.user.is_superuser and db_field.name == "store":

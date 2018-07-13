@@ -6,10 +6,12 @@ from rest_framework.exceptions import APIException
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from .serializers import *
 
 from SmartShoppingSystem.users.permissions import IsUserOrReadOnly
+
 
 class BadRequest(APIException):
     status_code = 400
@@ -113,7 +115,9 @@ class NotificationListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Notification.objects.all()
+        user_interest = Interest.objects.filter(owner__id=user.id)
+        query = Q(product__in=user_interest.values_list('product')) | Q(category__in=user_interest.values_list('category'))
+        queryset = Notification.objects.filter(query).distinct()
         return queryset
 
 
@@ -159,6 +163,13 @@ class InterestDestroyAPIView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class BeaconAPIView(generics.RetrieveAPIView):
+    queryset = Beacon.objects.all()
+    serializer_class = BeaconSerializer
+    permission_classes = (AllowAny,)
+    lookup_field = 'beacon_id'
 
 
 

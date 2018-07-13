@@ -3,6 +3,8 @@ from .models import *
 from rest_framework import serializers
 from .models import Shopper
 
+from django.db.models import Q
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -52,17 +54,41 @@ class ProductSerializer(serializers.ModelSerializer):
 
         return False
 
-
     class Meta:
         model = Product
         fields = ('id', 'name', 'description', 'brand', 'price', 'quantity', 'image', 'thumbnail', 'is_liked')
 
 
+class BeaconSerializer(serializers.ModelSerializer):
+    notifications = serializers.SerializerMethodField()
+    store = StoreSerializer()
+
+    def get_notifications(self, instance):
+        user = self.context['request'].user
+        if not user:
+            # Return all of the notifications for anonymous
+            serializer = NotificationSerializer(Notification.objects.filter(beacons=instance).distinct(), many=True)
+        else:
+            # Filter based on user's interests
+            user_interest = Interest.objects.filter(owner__id=user.id)
+            query = Q(beacons=instance) & (Q(product__in=user_interest.values_list('product')) | Q(
+                category__in=user_interest.values_list('category')))
+            serializer = NotificationSerializer(Notification.objects.filter(query).distinct(), many=True)
+        return serializer.data
+
+    class Meta:
+        model = Beacon
+        fields = ('id', 'name', 'beacon_id', 'store', 'notifications')
+
+
 class NotificationSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    category = CategorySerializer()
+    store = StoreSerializer()
 
     class Meta:
         model = Notification
-        fields = ('id', 'title', 'message', 'beacons', 'product', 'category', 'store')
+        fields = ('id', 'title', 'message', 'beacons', 'product', 'category', 'store', 'started_at', 'expired_at')
 
 
 class InterestSerializer(serializers.ModelSerializer):
@@ -77,7 +103,7 @@ class InterestSerializer(serializers.ModelSerializer):
 class CreateInterestSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     category = CategorySerializer()
-    
+
     class Meta:
         model = Interest
         fields = ('id', 'product', 'category')

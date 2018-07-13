@@ -7,7 +7,7 @@ from SmartShoppingSystem.users.models import User
 
 from SmartShoppingSystem.storage import OverwriteStorage
 
-# Create your models here.
+import datetime
 
 
 class Manager(User):
@@ -122,8 +122,9 @@ class Product(models.Model):
 
 class Beacon(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    beaconId = models.CharField(max_length=255, null=False, unique=True)
+    beacon_id = models.CharField(max_length=255, null=False, unique=True)
     store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name
@@ -136,6 +137,8 @@ class Notification(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
+    started_at = models.DateTimeField(editable=True, blank=True, default=datetime.date.today)
+    expired_at = models.DateTimeField(editable=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -145,6 +148,7 @@ class Interest(models.Model):
     owner = models.ForeignKey(Shopper, null=False, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         string = '' if self.product is None else self.product.name
