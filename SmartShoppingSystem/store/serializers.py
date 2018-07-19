@@ -37,10 +37,19 @@ class StoreSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    is_liked = serializers.SerializerMethodField('check_like_status')
+
+    def check_like_status(self, instance):
+        request = self.context['request']
+        if request.user:
+            queryset = Interest.objects.filter(owner=request.user, category=instance)
+            return queryset.count() > 0
+
+        return False
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'description', 'thumbnail')
+        fields = ('id', 'name', 'description', 'thumbnail', 'is_liked')
 
 
 class ProductSerializer(serializers.ModelSerializer):
