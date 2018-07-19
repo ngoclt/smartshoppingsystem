@@ -25,8 +25,15 @@ class ShopperViewSet(mixins.RetrieveModelMixin,
     Updates and retrives user accounts
     """
     queryset = Shopper.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsUserOrReadOnly,)
+    serializer_class = ShopperSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        if pk == 'me':
+            return get_object_or_404(Shopper, id=self.request.user.id)
+        else:
+            return super().get_object()
 
 
 class ShopperCreateViewSet(mixins.CreateModelMixin,

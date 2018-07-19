@@ -6,11 +6,11 @@ from .models import Shopper
 from django.db.models import Q
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ShopperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shopper
-        fields = ('id', 'username', 'first_name', 'last_name', 'email')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'avatar', 'gender', 'address_line', 'zip_code', 'state', 'country', 'telephone')
         read_only_fields = ('username', 'email')
 
 
