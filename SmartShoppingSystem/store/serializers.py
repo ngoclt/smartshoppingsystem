@@ -90,10 +90,17 @@ class BeaconSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'beacon_id', 'store', 'notifications')
 
 
+class NestedBeaconSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Beacon
+        fields = ('id', 'name', 'beacon_id')
+
+
 class NotificationSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     category = CategorySerializer()
     store = StoreSerializer()
+    beacon = NestedBeaconSerializer()
 
     class Meta:
         model = Notification
