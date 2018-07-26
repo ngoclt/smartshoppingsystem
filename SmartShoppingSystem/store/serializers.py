@@ -41,7 +41,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def check_like_status(self, instance):
         request = self.context['request']
-        if request.user:
+        if request.user and request.user.is_authenticated:
             queryset = Interest.objects.filter(owner=request.user, category=instance)
             return queryset.count() > 0
 
@@ -57,7 +57,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def check_like_status(self, instance):
         request = self.context['request']
-        if request.user:
+        if request.user and request.user.is_authenticated:
             queryset = Interest.objects.filter(owner=request.user, product=instance)
             return queryset.count() > 0
 
@@ -74,7 +74,7 @@ class BeaconSerializer(serializers.ModelSerializer):
 
     def get_notifications(self, instance):
         user = self.context['request'].user
-        if not user:
+        if not user or not user.is_authenticated:
             # Return all of the notifications for anonymous
             serializer = NotificationSerializer(Notification.objects.filter(beacons=instance).distinct(), many=True)
         else:
