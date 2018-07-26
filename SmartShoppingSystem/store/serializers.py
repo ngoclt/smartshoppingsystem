@@ -100,7 +100,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     category = CategorySerializer()
     store = StoreSerializer()
-    beacon = NestedBeaconSerializer()
+    beacons = NestedBeaconSerializer(many=True)
 
     class Meta:
         model = Notification
