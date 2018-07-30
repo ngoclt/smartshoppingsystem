@@ -7,8 +7,7 @@ from SmartShoppingSystem.users.models import User
 
 from SmartShoppingSystem.storage import OverwriteStorage
 
-import datetime
-
+from django.utils.timezone import now
 
 class Manager(User):
     begin_time = models.DateTimeField(auto_now_add=True)
@@ -137,7 +136,7 @@ class Notification(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
-    started_at = models.DateTimeField(editable=True, blank=True, default=datetime.date.today)
+    started_at = models.DateTimeField(editable=True, blank=True, default=now())
     expired_at = models.DateTimeField(editable=True, blank=True)
 
     def __unicode__(self):
