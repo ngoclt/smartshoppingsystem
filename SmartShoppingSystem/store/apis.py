@@ -81,7 +81,12 @@ class StoreProductListAPIView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         store = get_object_or_404(Store, id=pk)
-        queryset = Product.objects.filter(categories__store=store).distinct()
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = Product.objects.filter(categories=category).distinct()
+        else:
+            queryset = Product.objects.filter(categories__store=store).distinct()
+
         return queryset
 
 
