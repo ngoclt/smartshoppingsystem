@@ -132,6 +132,9 @@ class NotificationListAPIView(generics.ListAPIView):
         queryset = Notification.objects.filter(query).distinct()
         return queryset
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
 
 class InterestListCreateAPIView(generics.ListCreateAPIView):
     """
@@ -182,6 +185,9 @@ class BeaconAPIView(generics.RetrieveAPIView):
     serializer_class = BeaconSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'beacon_id'
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
 
 
