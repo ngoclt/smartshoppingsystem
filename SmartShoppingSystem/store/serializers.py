@@ -73,16 +73,9 @@ class BeaconSerializer(serializers.ModelSerializer):
     store = StoreSerializer()
 
     def get_notifications(self, instance):
-        user = self.context['request'].user
-        if not user or not user.is_authenticated:
-            # Return all of the notifications for anonymous
-            serializer = NotificationSerializer(Notification.objects.filter(beacons=instance).distinct(), many=True)
-        else:
-            # Filter based on user's interests
-            user_interest = Interest.objects.filter(owner__id=user.id)
-            query = Q(beacons=instance) & (Q(product__in=user_interest.values_list('product')) | Q(
-                category__in=user_interest.values_list('category')))
-            serializer = NotificationSerializer(Notification.objects.filter(query).distinct(), many=True)
+        # Return all of the notifications for anonymous
+        serializer = NotificationSerializer(Notification.objects.filter(beacons=instance).distinct(),
+                                            context={"request": self.context['request']}, many=True)
         return serializer.data
 
     class Meta:
