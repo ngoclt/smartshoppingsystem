@@ -117,8 +117,6 @@ class InterestSerializer(serializers.ModelSerializer):
 
 
 class CreateInterestSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-    category = CategorySerializer()
 
     class Meta:
         model = Interest
