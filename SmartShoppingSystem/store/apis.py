@@ -141,8 +141,12 @@ class InterestListCreateAPIView(generics.ListCreateAPIView):
         Create & delete interest for user
     """
     queryset = Interest.objects.all()
-    serializer_class = CreateInterestSerializer
     permission_classes = (IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateInterestSerializer
+        return InterestSerializer
 
     def get_queryset(self):
         ret = super(InterestListCreateAPIView, self).get_queryset()

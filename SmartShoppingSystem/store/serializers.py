@@ -103,9 +103,10 @@ class NotificationSerializer(serializers.ModelSerializer):
 class InterestSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     category = CategorySerializer()
+    owner = ShopperSerializer()
 
     class Meta:
-        model = Shopper
+        model = Interest
         fields = ('id', 'product', 'category', 'owner')
 
 
