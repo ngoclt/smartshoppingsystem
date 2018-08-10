@@ -16,6 +16,9 @@ class Manager(User):
         verbose_name = "Manager"
         verbose_name_plural = "Managers"
 
+    def __str__(self):
+        return self.last_name + ' ' + self.first_name
+
 
 class Shopper(User):
     address_line = models.CharField(max_length=100, blank=True, default='')
@@ -28,7 +31,7 @@ class Shopper(User):
         verbose_name = "Shopper"
         verbose_name_plural = "Shoppers"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.last_name + ' ' + self.first_name
 
 
@@ -46,7 +49,7 @@ class Store(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -72,7 +75,7 @@ class Category(models.Model):
         ordering = ['name']
         verbose_name_plural = 'Categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -115,7 +118,7 @@ class Product(models.Model):
         db_table = 'products'
         ordering = ['-created_at']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -125,7 +128,7 @@ class Beacon(models.Model):
     store = models.ForeignKey(Store, null=False, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -139,7 +142,7 @@ class Notification(models.Model):
     started_at = models.DateTimeField(editable=True, blank=True, default=now())
     expired_at = models.DateTimeField(editable=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -149,7 +152,7 @@ class Interest(models.Model):
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         string = '' if self.product is None else self.product.name
         string += '' if self.category is None else (", " + self.category.name)
         return self.owner.first_name + ' likes ' + string
