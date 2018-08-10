@@ -77,7 +77,7 @@ class StoreAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
 
-        return qs.filter(manager=request.user)
+        return qs.filter(manager=request.user).distinct()
 
 
 admin.site.register(Store, StoreAdmin)
@@ -110,7 +110,7 @@ class ProductAdmin(admin.ModelAdmin):
             return qs
 
         # get products in store that manager is manage
-        return qs.filter(categories__store__in=Store.objects.filter(manager=request.user))
+        return qs.filter(categories__store__in=Store.objects.filter(manager=request.user)).distinct()
 
 
 admin.site.register(Product, ProductAdmin)
@@ -140,7 +140,7 @@ class CategoryAdmin(admin.ModelAdmin):
             return qs
 
         # get products in store that manager is manage
-        return qs.filter(store__in=Store.objects.filter(manager=request.user))
+        return qs.filter(store__in=Store.objects.filter(manager=request.user)).distinct()
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -164,7 +164,7 @@ class BeaconAdmin(admin.ModelAdmin):
             return qs
 
         # get products in store that manager is manage
-        return qs.filter(store__in=Store.objects.filter(manager=request.user))
+        return qs.filter(store__in=Store.objects.filter(manager=request.user)).distinct()
 
 
 admin.site.register(Beacon, BeaconAdmin)
@@ -188,7 +188,7 @@ class NotificationAdmin(admin.ModelAdmin):
             return qs
 
         # get products in store that manager is manage
-        return qs.filter(store__in=Store.objects.filter(manager=request.user))
+        return qs.filter(store__in=Store.objects.filter(manager=request.user)).distinct()
 
     def get_beacons(self, obj):
         if obj.beacons:
