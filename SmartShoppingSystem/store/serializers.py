@@ -3,9 +3,6 @@ from .models import *
 from rest_framework import serializers
 from .models import Shopper
 
-from django.db.models import Q
-
-
 class ShopperSerializer(serializers.ModelSerializer):
 
     class Meta:

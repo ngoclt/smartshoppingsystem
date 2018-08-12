@@ -10,9 +10,6 @@ from django.db.models import Q
 
 from .serializers import *
 
-from SmartShoppingSystem.users.permissions import IsUserOrReadOnly
-
-
 class BadRequest(APIException):
     status_code = 400
     default_detail = 'Bad request'
@@ -162,7 +159,8 @@ class InterestListCreateAPIView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
-            shopper = get_object_or_404(Shopper, pk=self.request.user)
+            shopper = get_object_or_404(Shopper, id=self.request.user.id)
+
             queryset = Interest.objects.filter(owner=shopper, product=product, category=category)
 
             if queryset.count() == 0:
@@ -182,6 +180,40 @@ class InterestDestroyAPIView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class RemoveInterestedProductAPIView(generics.DestroyAPIView):
+    queryset = Interest.objects.all()
+    serializer_class = InterestSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def destroy(self, request, *args, **kwargs):
+        shopper = get_object_or_404(Shopper, id=self.request.user.id)
+        product_id = self.kwargs['pk']
+        interest = Interest.objects.filter(owner=shopper, product__id=product_id).distinct().first()
+
+        if not interest:
+            raise BadRequest('Can\'t find the interest.')
+
+        self.perform_destroy(interest)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class RemoveInterestedCategoryAPIView(generics.DestroyAPIView):
+    queryset = Interest.objects.all()
+    serializer_class = InterestSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def destroy(self, request, *args, **kwargs):
+        shopper = get_object_or_404(Shopper, id=self.request.user.id)
+        category_id = self.kwargs['pk']
+        interest = Interest.objects.filter(owner=shopper, category__id=category_id).distinct().first()
+
+        if not interest:
+            raise BadRequest('Can\'t find the interest.')
+
+        self.perform_destroy(interest)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BeaconAPIView(generics.RetrieveAPIView):
